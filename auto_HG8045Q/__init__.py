@@ -22,8 +22,12 @@ def main():
         if not client.get_session():
             log('error', 'a wrong username or password. please check your settings.')
             sys.exit(1)
+    log('system', 'successful login to the router.')
 
-    log('info', 'successful login to the router.')
     data = client.get_device_info()
-    print(data)
-
+    print()
+    print(f'- Hardware version: {data["hardware_version"]}\n'
+          f'- Software version: {data["software_version"]}\n'
+          f'- Mac address: {data["mac_address"]}\n'
+          f'- Serial number: {data["serial_number"]}\n'
+          f'- Manufacture info: {data["manufacture_info"]}')

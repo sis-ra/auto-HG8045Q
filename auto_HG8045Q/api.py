@@ -1,6 +1,6 @@
 import re
 from base64 import b64encode
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Dict,  Optional
 
 import requests
 
@@ -43,7 +43,7 @@ class Api:
                 r'"(\w*)",' \
                 r'"(\d*-\d*-\d*_\d*:\d*:\d*) ",' \
                 r'"(\w*:\w*:\w*:\w*:\w*:\w*)",' \
-                r'"(EchoLife HG8045Q GPON Terminal &#40;CLASS B\+/PRODUCT ID:\w*/CHIP:\w*&#41);",' \
+                r'"(EchoLife HG8045Q GPON Terminal &#40;CLASS B\+/PRODUCT ID:\w*/CHIP:\w*&#41;)",' \
                 r'"(\w*\.\w*)"'
         # SN
         # Hardware Version
@@ -57,14 +57,15 @@ class Api:
 
         matched_data = re.search(regex, req_info.text).groups()
         data = {
-            'sn': matched_data[0],
+            'serial_number': matched_data[0],
             'hardware_version': matched_data[1],
             'software_version': matched_data[2],
             'device_type': matched_data[3],
             '_unknown': matched_data[4],
             '_unknown2': matched_data[5],
-            'macaddress': matched_data[6],
-            'description': matched_data[7],
+            'mac_address': matched_data[6],
+            'description': matched_data[7].replace('&#40;', '(').replace('&#41;', ')'),
             'manufacture_info': matched_data[8]
         }
+
         return data
